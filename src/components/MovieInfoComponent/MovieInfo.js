@@ -10,17 +10,16 @@ const MovieInfo = () => {
     const {movie} = useSelector(state => state.movieReducer);
     const movieId = useParams();
     const id = Number(movieId.id)
-    console.log(id)
 
     useEffect(()=> {
         dispatch(movieActions.getMovieById({id}))
     }, [])
 
-    console.log(movie)
-
     return (
         <div>
-            {<MovieDetails key={movie.id} movie={movie}/>}
+
+            {movie && <MovieDetails key={movie.id} movie={movie}/>}
+
         </div>
     );
 };

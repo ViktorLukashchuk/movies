@@ -1,20 +1,20 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {movieActions} from "../../redux/slices/movieSlice";
 import {useSearchParams} from "react-router-dom";
+import {movieActions} from "../../redux/slices/movieSlice";
 import MovieComponent from "../MovieComponent/MovieComponent";
 
-
-const MoviesComponent = () => {
+const MoviesFromSearch = () => {
 
     const dispatch = useDispatch();
-    const {movies} = useSelector(state => state.movieReducer);
+    const {searchResult} = useSelector(state => state.movieReducer);
     const [query, setQuery] = useSearchParams({page:'1'});
-
     const page = query.get('page');
+    const queryParam = query.get('query');
 
-   useEffect(()=> {
-        dispatch(movieActions.getAll({page}))
+
+    useEffect(()=> {
+        dispatch(movieActions.searchMovie({queryParam}))
     }, [page])
 
     return (
@@ -23,11 +23,11 @@ const MoviesComponent = () => {
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
                 gap: "20px"
-        }
+            }
         }>
-            {movies.map(movie => <MovieComponent key={movie.id} movie={movie} />)}
+            {searchResult?.map(movie => <MovieComponent key={movie.id} movie={movie} />)}
         </div>
     );
 };
 
-export default MoviesComponent;
+export default MoviesFromSearch;

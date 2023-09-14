@@ -1,10 +1,14 @@
 import React from 'react';
+import {links} from "../../constants/links/links";
+import {Link} from "react-router-dom";
 
 const Genre = ({genre}) => {
-    const {name} = genre
+    const {id, name} = genre
     return (
         <ul>
-            <li>{name}</li>
+           <Link key={name} to={`${links.GENRES}/${id}`}>
+                {name}
+           </Link>
         </ul>
     );
 };

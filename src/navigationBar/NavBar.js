@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {links} from "../constants/links/links";
+import SearchComponent from "../components/SearchComponent/SearchComponent";
 
 const NavBar = () => {
     const buttons = [
@@ -12,11 +13,7 @@ const NavBar = () => {
         {
             label: 'Genres',
             route: links.GENRES
-        },
-        {
-            label: 'Search',
-
-        },
+        }
     ]
     return (
         <div style={
@@ -31,8 +28,10 @@ const NavBar = () => {
             {buttons.map((btn, idx) =>
                 <Link key={idx} to={btn.route}>
                     {btn.label}
-                </Link>)}
-        </div>
+                </Link>)
+            }
+            <SearchComponent/>
+           </div>
     );
 };
 

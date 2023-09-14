@@ -2,12 +2,15 @@ import styles from './MovieDetails.module.css';
 import {w500PosterUrl} from "../../constants/urls/urls";
 import {Link} from "react-router-dom";
 import {links} from "../../constants/links/links";
+import React from "react";
+import Trailer from "../Trailer/Trailer";
+import {StarRating} from "../Rating/StarRating";
 const MovieDetails = ({movie}) => {
 
-    const {release_date, original_title, tagline, poster_path, genres, vote_average, vote_count, runtime, production_countries} = movie
+    const {release_date, original_title, tagline, poster_path, genres, vote_average, vote_count, runtime, production_countries, id} = movie
 
     return (
-
+    <div>
     <div className={styles.flexContainer}>
         {poster_path &&
             <div className={styles.posterContainer}>
@@ -32,9 +35,9 @@ const MovieDetails = ({movie}) => {
                     <>
                         <h3>Genre:</h3>
                         <div>
-                            {genres.map((genre, index) => {
+                            {genres?.map((genre, index) => {
                                 return (
-                                    <Link key={genre.name} to={`${links.GENRES}/${genre.name}/${genre.id}`}>
+                                    <Link key={genre.name} to={`${links.GENRES}/${genre.id}`}>
                                         {genre.name}
                                         {index !== genres.length - 1 && ','}
                                     </Link>
@@ -51,7 +54,7 @@ const MovieDetails = ({movie}) => {
                 {production_countries && <>
                     <h3>Country:</h3>
                     <div>
-                        {production_countries.map((country, index) => {
+                        {production_countries?.map((country, index) => {
                             return <span key={country.name}>
                                     {index !== production_countries.length - 1 ?
                                         `${country.name}, ` :
@@ -63,6 +66,13 @@ const MovieDetails = ({movie}) => {
                 </>}
             </div>
         </div>
+
+
+
+    </div>
+        <h2 className={styles.title}>Rating of the film - {vote_average}/10 - {vote_count} votes</h2>
+       <StarRating vote_average={vote_average} vote_count={vote_count}/>
+        <Trailer id={id}/>
     </div>
 );
 };

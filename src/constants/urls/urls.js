@@ -12,4 +12,6 @@ const urls = {
     genresList, moviesList, searchMovie, movieById
 }
 
-export {baseMoviesURL, w500PosterUrl, urls}
+const trailerUrl = 'https://www.youtube.com/embed/';
+
+export {baseMoviesURL, w500PosterUrl, urls, trailerUrl}

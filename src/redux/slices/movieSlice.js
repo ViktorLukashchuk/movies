@@ -3,9 +3,10 @@ import {moviesService} from "../../services/moviesServices";
 
 const initialState = {
     movies: [],
-    genres: [],
     pages: 500,
-    movie: {}
+    movie: null,
+    movieVideos: [],
+    searchResult: []
 }
 
 const getAll = createAsyncThunk (
@@ -20,18 +21,6 @@ const getAll = createAsyncThunk (
         }
 );
 
-const getGenres = createAsyncThunk (
-    'movieSlice/getGenres',
-    async (_,{rejectWithValue}) =>{
-        try {
-            const {data} = await moviesService.getGenres();
-            return data
-        } catch (e) {
-            return rejectWithValue(e.response.data)
-        }
-    }
-);
-
 const getMovieById = createAsyncThunk (
     'movieSlice/getMovieById',
     async ({id}, {rejectWithValue}) => {
@@ -42,7 +31,32 @@ const getMovieById = createAsyncThunk (
             return rejectWithValue(e.response.data)
         }
     }
-)
+);
+
+const getMovieVideosByID = createAsyncThunk (
+    'movieSlice/getMovieVideosByID',
+    async ({id}, {rejectWithValue}) => {
+        try {
+            const {data} = await moviesService.getVideoById(id)
+            return data
+        } catch (e) {
+            return rejectWithValue(e.response.data)
+        }
+    }
+);
+
+const searchMovie = createAsyncThunk (
+    'movieSlice/searchMovie',
+    async ({query}, {rejectWithValue}) => {
+        try {
+            const {data} = await moviesService.getByQuery(query)
+            console.log(data)
+            return data
+        } catch (e) {
+            return rejectWithValue(e.response.data)
+        }
+    }
+);
 
 const movieSlice = createSlice({
     name: "movieSlice",
@@ -53,11 +67,16 @@ const movieSlice = createSlice({
             const {results} = action.payload;
             state.movies = results
         })
-        .addCase(getGenres.fulfilled, (state, action) => {
-            state.genres = action.payload.genres
-        })
         .addCase(getMovieById.fulfilled, (state, action) => {
             state.movie = action.payload
+        })
+        .addCase(getMovieVideosByID.fulfilled, (state, action) => {
+            const {results} = action.payload;
+            state.movieVideos = results
+        })
+        .addCase(searchMovie.fulfilled, (state, action) => {
+            const {results} = action.payload;
+            state.searchResult = results
         })
 
 })
@@ -66,8 +85,9 @@ const {reducer: movieReducer, actions} = movieSlice;
 const movieActions = {
     ...actions,
     getAll,
-    getGenres,
-    getMovieById
+    getMovieById,
+    getMovieVideosByID,
+    searchMovie
 }
 export {
     movieActions,
